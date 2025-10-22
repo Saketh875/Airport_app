@@ -3,7 +3,7 @@ services:
   - type: web
     name: airport-backend
     env: node
-    plan: free
+    plan: starter
     buildCommand: cd backend && npm install && npm run build
     startCommand: cd backend && npm start
     envVars:
@@ -20,7 +20,7 @@ services:
   - type: web
     name: airport-frontend
     env: static
-    plan: free
+    plan: starter
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist/frontend
     envVars:

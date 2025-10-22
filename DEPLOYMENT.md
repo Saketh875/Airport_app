@@ -18,16 +18,7 @@ This guide will help you deploy your Airport Issue Portal to Render.com.
 
 ## Step 2: Deploy Backend to Render
 
-### Option A: Using render.yaml (Recommended)
-
-1. Go to [Render Dashboard](https://dashboard.render.com)
-2. Click "New +" → "Blueprint"
-3. Connect your GitHub repository
-4. Select your repository
-5. Render will automatically detect the `render.yaml` file
-6. Click "Apply" to deploy both services
-
-### Option B: Manual Deployment
+### Option A: Manual Deployment (Recommended)
 
 #### Deploy Backend:
 
@@ -39,11 +30,10 @@ This guide will help you deploy your Airport Issue Portal to Render.com.
    - **Environment**: `Node`
    - **Build Command**: `cd backend && npm install && npm run build`
    - **Start Command**: `cd backend && npm start`
-   - **Plan**: Free
+   - **Plan**: Choose the plan that fits your needs (Starter plan is usually sufficient)
 
 #### Environment Variables for Backend:
 - `NODE_ENV`: `production`
-- `PORT`: `10000` (Render will override this)
 - `MONGO_URI`: Your MongoDB Atlas connection string
 - `JWT_SECRET`: A secure random string (e.g., use a password generator)
 
@@ -56,7 +46,7 @@ This guide will help you deploy your Airport Issue Portal to Render.com.
    - **Name**: `airport-frontend`
    - **Build Command**: `cd frontend && npm install && npm run build`
    - **Publish Directory**: `frontend/dist/frontend`
-   - **Plan**: Free
+   - **Plan**: Choose appropriate plan
 
 #### Environment Variables for Frontend:
 - `API_URL`: `https://your-backend-url.onrender.com` (update after backend deploys)
@@ -101,10 +91,10 @@ npm run build
 npm start
 ```
 
-## Free Tier Limitations
+## Render Plan Information
 
-- **Backend**: Sleeps after 15 minutes of inactivity
-- **Frontend**: Unlimited static hosting
+- **Backend**: Requires a paid plan (Starter plan starts at $7/month)
+- **Frontend**: Static sites may have free options
 - **Database**: MongoDB Atlas free tier (512MB)
 
 ## Production Considerations
