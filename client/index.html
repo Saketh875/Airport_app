@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Airport Issue Portal (Demo)</title>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root { --red:#ef4444; --yellow:#f59e0b; --green:#10b981; --bg:#0b1020; --panel:#121933; --muted:#9aa3b2; }
+		*{box-sizing:border-box}
+		body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;background:linear-gradient(180deg,#0b1020,#0e1430);color:#e7ecf3}
+		header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid #1e2648;background:#0c1328;position:sticky;top:0;z-index:10}
+		header h1{font-size:18px;margin:0}
+		.container{max-width:1200px;margin:24px auto;padding:0 16px}
+		.card{background:var(--panel);border:1px solid #1f2a4a;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+		.p16{padding:16px}
+		.grid{display:grid;gap:16px}
+		.columns-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+		.badge{font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid #2a345e;color:#c8d1e4;background:#0e1737;}
+		kbd{background:#0e1737;border:1px solid #26305a;border-bottom-width:2px;border-radius:6px;padding:2px 6px}
+		.button{cursor:pointer;padding:10px 14px;border-radius:10px;border:1px solid #2a345e;background:#0f1a3b;color:#e7ecf3}
+		.button.primary{background:#2242ff;border-color:#2242ff}
+		.flex{display:flex;gap:8px;align-items:center}
+		.flex-col{display:flex;flex-direction:column;gap:8px}
+		.input{background:#0e1737;border:1px solid #2a345e;border-radius:10px;color:#e7ecf3;padding:10px 12px}
+		.column h3{margin:0 0 8px 0}
+		.issue{border:1px solid #26305a;border-radius:10px;padding:10px;background:#0e1737}
+		.issue.red{border-color:var(--red)}
+		.issue.yellow{border-color:var(--yellow)}
+		.issue.green{border-color:var(--green)}
+		.tag{font-size:11px;opacity:.8}
+		hr.sep{border:0;border-top:1px solid #1f2a4a;margin:12px 0}
+		footer{opacity:.6;font-size:12px;margin-top:24px}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>Airport Issue Portal</h1>
+		<div class="flex" id="authZone">
+			<select id="role" class="input">
+				<option value="staff">Staff</option>
+				<option value="passenger">Passenger</option>
+			</select>
+			<input id="email" class="input" placeholder="email" value="staff@example.com"/>
+			<input id="password" class="input" placeholder="password" type="password" value="staff123"/>
+			<button class="button primary" id="loginBtn">Login</button>
+		</div>
+	</header>
+	<div class="container">
+		<div class="card p16 flex" style="justify-content:space-between;align-items:center">
+			<div class="flex" style="gap:12px">
+				<span class="badge">Portal SOS</span>
+				<button class="button" data-sos="CabinCrew">Cabin Crew</button>
+				<button class="button" data-sos="Sanitation">Sanitation</button>
+				<button class="button" data-sos="Security">Security</button>
+			</div>
+			<div class="flex" style="gap:12px">
+				<span class="badge">Legend</span>
+				<span><kbd style="border-color:var(--red);color:var(--red)">Red</kbd> Reported</span>
+				<span><kbd style="border-color:var(--yellow);color:var(--yellow)">Yellow</kbd> In-progress</span>
+				<span><kbd style="border-color:var(--green);color:var(--green)">Green</kbd> Resolved</span>
+			</div>
+		</div>
+
+		<div id="staffDash" class="grid columns-3" style="margin-top:16px;display:none">
+			<div class="column card p16">
+				<h3>Report (Red)</h3>
+				<div class="flex-col">
+					<select id="staffSector" class="input">
+						<option>CabinCrew</option>
+						<option>Sanitation</option>
+						<option>Security</option>
+					</select>
+					<input id="staffCategory" class="input" placeholder="Category e.g. Passenger Misconduct"/>
+					<textarea id="staffDesc" class="input" placeholder="Describe the issue" rows="3"></textarea>
+					<button id="reportStaff" class="button primary">Report Issue</button>
+				</div>
+				<hr class="sep">
+				<div id="redList" class="flex-col"></div>
+			</div>
+			<div class="column card p16">
+				<h3>In Progress (Yellow)</h3>
+				<div id="yellowList" class="flex-col"></div>
+			</div>
+			<div class="column card p16">
+				<h3>Resolved (Green)</h3>
+				<div id="greenList" class="flex-col"></div>
+			</div>
+		</div>
+
+		<div id="passengerDash" class="grid columns-3" style="margin-top:16px;display:none">
+			<div class="column card p16">
+				<h3>Report (Red)</h3>
+				<div class="flex-col">
+					<select id="passFlow" class="input">
+						<option>Arrivals</option>
+						<option>Boarding</option>
+						<option>Food</option>
+					</select>
+					<input id="passCategory" class="input" placeholder="Category e.g. Boarding Pass Issue"/>
+					<textarea id="passDesc" class="input" placeholder="Describe the issue" rows="3"></textarea>
+					<button id="reportPassenger" class="button primary">Report Issue</button>
+				</div>
+				<hr class="sep">
+				<div id="redListP" class="flex-col"></div>
+			</div>
+			<div class="column card p16">
+				<h3>In Progress (Yellow)</h3>
+				<div id="yellowListP" class="flex-col"></div>
+			</div>
+			<div class="column card p16">
+				<h3>Resolved (Green)</h3>
+				<div id="greenListP" class="flex-col"></div>
+			</div>
+		</div>
+
+		<footer>Demo UI with dummy data. Hook to API at `http://localhost:4000` when server runs.</footer>
+	</div>
+	<script>
+		const API = 'http://localhost:4000';
+		let token = '';
+		const el = (id)=>document.getElementById(id);
+		const red = document.getElementById('redList');
+		const yellow = document.getElementById('yellowList');
+		const green = document.getElementById('greenList');
+		const redP = document.getElementById('redListP');
+		const yellowP = document.getElementById('yellowListP');
+		const greenP = document.getElementById('greenListP');
+
+		const dummy = [
+			{ id:'1', sector:'CabinCrew', category:'Passenger Misconduct', description:'Verbal abuse on aisle 5', status:'red' },
+			{ id:'2', sector:'Sanitation', category:'Restroom availability', description:'Gate 12 restroom closed', status:'yellow' },
+			{ id:'3', sector:'Security', category:'CCTV defect', description:'Checkpoint 2 flicker', status:'green' }
+		];
+		const dummyP = [
+			{ id:'4', sector:'Boarding', category:'Boarding pass issue', description:'QR not scanning', status:'red' },
+			{ id:'5', sector:'Food', category:'Quality', description:'Stale sandwich kiosk B', status:'yellow' },
+			{ id:'6', sector:'Arrivals', category:'Luggage damage', description:'Broken wheel belt 3', status:'green' }
+		];
+
+		function render(target, items){
+			target.innerHTML='';
+			for(const it of items){
+				const d = document.createElement('div');
+				d.className = 'issue ' + it.status;
+				d.innerHTML = `<div class="flex" style="justify-content:space-between">
+					<div class="flex-col">
+						<strong>${it.category}</strong>
+						<span class="tag">${it.sector}</span>
+						<span>${it.description}</span>
+					</div>
+					<div class="flex" style="gap:6px">
+						${it.status==='red'?'<button class="button" data-take="'+it.id+'">Take</button>':''}
+						${it.status!=='green'?'<button class="button" data-resolve="'+it.id+'">Resolve</button>':''}
+					</div>
+				</div>`;
+				target.appendChild(d);
+			}
+		}
+
+		function refresh(){
+			render(red, dummy.filter(x=>x.status==='red'));
+			render(yellow, dummy.filter(x=>x.status==='yellow'));
+			render(green, dummy.filter(x=>x.status==='green'));
+			render(redP, dummyP.filter(x=>x.status==='red'));
+			render(yellowP, dummyP.filter(x=>x.status==='yellow'));
+			render(greenP, dummyP.filter(x=>x.status==='green'));
+		}
+
+		document.body.addEventListener('click', async (e)=>{
+			const t = e.target;
+			if(!(t instanceof HTMLElement)) return;
+			if(t.dataset.take){
+				const it = dummy.find(x=>x.id===t.dataset.take) || dummyP.find(x=>x.id===t.dataset.take);
+				if(it){ it.status='yellow'; refresh(); }
+			}
+			if(t.dataset.resolve){
+				const it = dummy.find(x=>x.id===t.dataset.resolve) || dummyP.find(x=>x.id===t.dataset.resolve);
+				if(it){ it.status='green'; refresh(); }
+			}
+			if(t.dataset.sos){
+				alert('SOS sent to '+t.dataset.sos+' (demo)');
+			}
+		});
+
+		el('reportStaff').onclick = async ()=>{
+			const sector = el('staffSector').value;
+			const category = el('staffCategory').value;
+			const description = el('staffDesc').value;
+			dummy.unshift({ id:String(Date.now()), sector, category, description, status:'red' });
+			refresh();
+		};
+		el('reportPassenger').onclick = async ()=>{
+			const sector = el('passFlow').value;
+			const category = el('passCategory').value;
+			const description = el('passDesc').value;
+			dummyP.unshift({ id:String(Date.now()), sector, category, description, status:'red' });
+			refresh();
+		};
+
+		el('loginBtn').onclick = async ()=>{
+			const role = el('role').value;
+			const email = el('email').value;
+			const password = el('password').value;
+			try{
+				const r = await fetch(API+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+				if(!r.ok) throw new Error('login failed');
+				const data = await r.json();
+				token = data.token;
+				const isStaff = role==='staff';
+				document.getElementById('staffDash').style.display = isStaff?'grid':'none';
+				document.getElementById('passengerDash').style.display = isStaff?'none':'grid';
+			}catch(e){
+				alert('Login demo will work after server starts and seed runs.');
+			}
+		};
+
+		refresh();
+	</script>
+</body>
+</html>
