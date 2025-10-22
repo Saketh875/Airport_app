@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server:dev": "ts-node-dev --respawn --transpile-only --project server/tsconfig.json server/src/app.ts",
-    "server:build": "tsc -p server/tsconfig.json",
-    "server:start": "node server/dist/app.js",
-    "server:seed": "ts-node-dev --transpile-only --project server/tsconfig.json server/src/seed.ts"
+    "server:dev": "ts-node-dev --respawn --transpile-only --project backend/tsconfig.json backend/src/app.ts",
+    "server:build": "tsc -p backend/tsconfig.json",
+    "server:start": "node backend/dist/app.js",
+    "server:seed": "ts-node-dev --transpile-only --project backend/tsconfig.json backend/src/seed.ts"
   },
   "keywords": [],
   "author": "",

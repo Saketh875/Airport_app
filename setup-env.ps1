@@ -21,11 +21,11 @@ MONGO_URI=$connectionString
 JWT_SECRET=$jwtSecret
 "@
 
-$envFile = "server\.env"
+$envFile = "backend\.env"
 Set-Content -Path $envFile -Value $envContent
 Write-Host "`nCreated $envFile with your MongoDB Atlas connection!" -ForegroundColor Green
 
 Write-Host "`nNext steps:" -ForegroundColor Cyan
 Write-Host "1. npm run server:seed" -ForegroundColor White
 Write-Host "2. npm run server:dev" -ForegroundColor White
-Write-Host "3. cd client && npm start" -ForegroundColor White
+Write-Host "3. cd frontend && npm start" -ForegroundColor White

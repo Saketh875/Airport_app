@@ -36,7 +36,7 @@ mongodb+srv://airportuser:airport123@cluster0.xxxxx.mongodb.net/airport_issue_po
 ```
 
 ## Update Your Project:
-1. Create `server/.env` file with:
+1. Create `backend/.env` file with:
 ```
 PORT=4000
 MONGO_URI=mongodb+srv://airportuser:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/airport_issue_portal?retryWrites=true&w=majority
@@ -47,5 +47,5 @@ JWT_SECRET=please-change-me
 ```bash
 npm run server:seed
 npm run server:dev
-cd client && npm start
+cd frontend && npm start
 ```
