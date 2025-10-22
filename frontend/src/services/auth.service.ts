@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-	private base = '/api/auth';
+	private base = `${environment.apiUrl}/api/auth`;
 	token: string | null = null;
 	user: any = null;
 	constructor(private http: HttpClient) {}

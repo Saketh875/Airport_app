@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
-	private base = '/api/issues';
+	private base = `${environment.apiUrl}/api/issues`;
 	constructor(private http: HttpClient, private auth: AuthService) {}
 	
 	private getHeaders(): HttpHeaders {
